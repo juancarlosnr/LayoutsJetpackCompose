@@ -3,18 +3,25 @@ package com.example.jetpackcomposecatalogo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.ArrayRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.example.jetpackcomposecatalogo.ui.theme.JetpackComposeCatalogoTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,11 +34,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MyComplexLayout()
+                    MyStateExample()
                 }
             }
         }
 
+    }
+}
+
+@Composable
+fun MyStateExample() {
+    //RememberSaveable nos permite mantener el estado aun que la vista se destruya
+    var counter by rememberSaveable{mutableStateOf(0)};
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = { counter +=1 }) {
+            Text(text = "Pulsar")
+        }
+        Text(text = "He sido pulsado ${counter} veces")
     }
 }
 
@@ -51,7 +74,8 @@ fun MyComplexLayout() {
         Row(
             Modifier
                 .fillMaxWidth()
-                .weight(1f)) {
+                .weight(1f)
+        ) {
             Box(
                 modifier = Modifier
                     .weight(1f)
@@ -85,7 +109,7 @@ fun MyComplexLayout() {
 }
 
 @Composable
-fun MySpacer(size:Int){
+fun MySpacer(size: Int) {
     Spacer(modifier = Modifier.height(size.dp))
 }
 
@@ -187,6 +211,6 @@ fun MyBox() {
 @Composable
 fun DefaultPreview() {
     JetpackComposeCatalogoTheme {
-        MyComplexLayout()
+        MyStateExample()
     }
 }
